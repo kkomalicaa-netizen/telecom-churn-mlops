@@ -28,6 +28,4 @@ telecom-churn-mlops/
 └── README.md                      # Project documentation
 
 
-| **8-9. Slim Container & Testing** | Built on `python:3.10-slim` (~150 MB image), validated through cloud CI/CD pipelines on GitHub Actions and a `pytest` suite. |
-| **10-11. Documentation & Retraining Plan** | Fully documented with OpenAPI schemas (`/docs`), model card details, threshold rationale, and retraining strategies. |
 
