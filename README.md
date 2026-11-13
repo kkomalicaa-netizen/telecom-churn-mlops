@@ -26,17 +26,8 @@ telecom-churn-mlops/
 ├── train.py                       # Training script with SHA-256 data hashing
 ├── Dockerfile                     # Slim container configuration (<600 MB)
 └── README.md                      # Project documentation
-## 📋 MLOps Requirements Compliance
 
-| Requirement | Implementation Details |
-| :--- | :--- |
-| **1. Data Preprocessing & Pipeline** | Handled via Scikit-learn `Pipeline` and `ColumnTransformer` (median imputation for numerics, constant/one-hot encoding for categoricals). |
-| **2. Cross-Validated Training** | Trained using an 80/20 stratified split with a `RandomForestClassifier` optimized for tabular subscriber metrics. |
-| **3. Decision Threshold Strategy** | Tuned to balance the cost of false negatives (missed churners) vs. false positives (wasted retention incentives). |
-| **4. Artifact Lineage & Versioning** | `train.py` computes a **SHA-256 hash** of the input training data and bundles it into `models/model_metadata.json` alongside library versions and evaluation metrics. |
-| **5. FastAPI & Pydantic Validation** | Strict type validation through Pydantic schemas that reject invalid payloads with clear HTTP 422 error messages. |
-| **6. Security, Logging & Unseen Data** | Protected via **API Key Authentication** (`x-api-key` header), request/latency middleware logging, and `handle_unknown='ignore'` in the encoder. |
-| **7. Drift Detection (Stretch)** | Includes a Population Stability Index (**PSI**) `/drift-check` endpoint to flag feature distribution shifts against the training baseline. |
+
 | **8-9. Slim Container & Testing** | Built on `python:3.10-slim` (~150 MB image), validated through cloud CI/CD pipelines on GitHub Actions and a `pytest` suite. |
 | **10-11. Documentation & Retraining Plan** | Fully documented with OpenAPI schemas (`/docs`), model card details, threshold rationale, and retraining strategies. |
 
