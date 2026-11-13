@@ -1,10 +1,19 @@
-from fastapi import FastAPI, HTTPException, Header
+from fastapi import FastAPI, HTTPException, Header, Request
 from pydantic import BaseModel, Field
 import joblib
 import pandas as pd
 import numpy as np
 import os
 import json
+import time
+import logging
+
+# Configure structured logging (Requirement 6)
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s"
+)
+logger = logging.getLogger(__name__)
 
 # Initialize FastAPI app
 app = FastAPI(
@@ -12,6 +21,21 @@ app = FastAPI(
     description="An API that predicts whether a telecom customer is likely to churn with artifact tracking and drift monitoring.",
     version="1.0.0"
 )
+
+# Request & Latency Logging Middleware (Requirement 6)
+@app.middleware("http")
+async def log_requests_and_latency(request: Request, call_next):
+    start_time = time.time()
+    response = await call_next(request)
+    process_time_ms = (time.time() - start_time) * 1000
+    
+    logger.info(
+        f"Path: {request.url.path} | "
+        f"Method: {request.method} | "
+        f"Status: {response.status_code} | "
+        f"Latency: {process_time_ms:.2f}ms"
+    )
+    return response
 
 # Load the trained model pipeline when the app starts
 MODEL_PATH = "models/model.joblib"
