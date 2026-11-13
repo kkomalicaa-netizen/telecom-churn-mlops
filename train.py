@@ -23,14 +23,19 @@ def get_file_hash(filepath):
 
 def train_model():
     print("1. Loading dataset...")
-    data_path = r'C:\Users\nphss\Komalica-Projects\Ml_Internship_Project\data\telecom_churn_data.xlsx'
+    data_path = r'data/telecom_churn_data.xlsx'
     try:
         df = pd.read_excel(data_path)
     except FileNotFoundError:
-        print(f"Dataset not found at {data_path}! Please make sure 'telecom_churn_data.xlsx' is inside your 'data/' folder.")
-        return
+        # Fallback relative path check
+        data_path = 'telecom_churn_data.xlsx'
+        try:
+            df = pd.read_excel(data_path)
+        except FileNotFoundError:
+            print(f"Dataset not found! Please make sure 'telecom_churn_data.xlsx' is inside your 'data/' folder.")
+            return
 
-    # Compute training data hash for lineage tracking
+    # Compute training data hash for lineage tracking (Requirement 4)
     print("Computing training data hash...")
     data_hash = get_file_hash(data_path)
 
@@ -64,6 +69,7 @@ def train_model():
         ('scaler', StandardScaler())
     ])
 
+    # handle_unknown='ignore' fulfills requirement for unseen category management (Requirement 6 / 4 integration)
     categorical_transformer = Pipeline(steps=[
         ('imputer', SimpleImputer(strategy='constant', fill_value='missing')),
         ('onehot', OneHotEncoder(handle_unknown='ignore', sparse_output=False))
@@ -110,7 +116,7 @@ def train_model():
         "joblib": joblib.__version__
     }
 
-    # Bundle metadata
+    # Bundle metadata (Requirement 4)
     metadata = {
         "training_data_sha256": data_hash,
         "library_versions": library_versions,
