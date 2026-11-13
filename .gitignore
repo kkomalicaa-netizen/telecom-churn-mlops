@@ -1,0 +1,13 @@
+# Python / Jupyter cache and checkpoints
+__pycache__/
+.ipynb_checkpoints/
+*.pyc
+*.pyo
+*.pyd
+
+# VS Code editor settings
+.vscode/
+
+# OS generated temporary files
+Thumbs.db
+Desktop.ini

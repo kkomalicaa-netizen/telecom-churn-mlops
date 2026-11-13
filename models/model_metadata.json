@@ -1,0 +1,13 @@
+{
+    "training_data_sha256": "1bcbc0ccc9b352175216979102628e579cfbde2c3ff57b005de168a433122640",
+    "library_versions": {
+        "scikit-learn": "1.9.1",
+        "pandas": "3.1.1",
+        "numpy": "2.4.6",
+        "joblib": "1.6.0"
+    },
+    "metrics": {
+        "test_accuracy": 0.7849538679914834,
+        "roc_auc": 0.8311064610297347
+    }
+}
